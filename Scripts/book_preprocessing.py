@@ -7,6 +7,7 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 df = pd.read_csv('Data-Files/Raw-Files/BX-Books.csv')
+
 # Filter out all non ASCII characters
 filtered_titles = df[~df['Book-Title'].apply(pf.has_special_characters)]['Book-Title']
 filtered_authors = df[~df['Book-Author'].apply(pf.has_special_characters)]['Book-Author']
@@ -41,5 +42,3 @@ tfidf_matrix = tfidf_vectorizer.fit_transform(processed_titles)
 # df_tfidf = pd.DataFrame(tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
 # df_tfidf.index = filtered_titles
 # df_tfidf.to_csv("Data-Files/Preprocessed-Files/Title-Tfidf.csv")
-
-#df.to_csv('Data-Files/Preprocessed-Files/Updated_Books.csv', index=False)

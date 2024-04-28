@@ -5,10 +5,12 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+# Returns True if the string has special characters
 def has_special_characters(s):
     return any(ord(char) > 127 for char in s)
 
 
+# Joins together consecutive single characters in a string
 def join_characters(s):
     text = s.split()
     curr = ''
@@ -28,6 +30,7 @@ def join_characters(s):
     return ' '.join(new_words)
 
 
+# Preprocesses text
 def text_preprocess(doc, stop_words, lemmatizer):
     doc = doc.lower()
     # Fixing special cases (periods with no spaces)
