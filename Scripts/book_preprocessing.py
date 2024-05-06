@@ -9,22 +9,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 df = pd.read_csv('Data-Files/Raw-Files/BX-Books.csv')
 
 # Filter out all non ASCII characters
-filtered_titles = df[~df['Book-Title'].apply(pf.has_special_characters)]['Book-Title']
-filtered_authors = df[~df['Book-Author'].apply(pf.has_special_characters)]['Book-Author']
-
-# Author preprocessing steps
-# Setting all author names to lowercase
-df['Book-Author'] = df['Book-Author'].apply(lambda x: x.lower())
-
-# Fixing special cases (periods with no spaces)
-author_special = filtered_authors.apply(lambda x: re.sub(r'\.(?=\w)', '. ', x))
-
-# Removing All punctuations
-author_punct = author_special.apply(lambda x: re.sub(r'[^A-Za-z\s]', '', x))
-
-# Joining together single letters into one word (for name initials)
-processed_authors = author_punct.apply(pf.join_characters)
-df['Author-Tokens'] = processed_authors.apply(word_tokenize)
+df = df[~df['Book-Title'].apply(pf.has_special_characters)]
+df = df[~df['Book-Author'].apply(pf.has_special_characters)]
+df = df[~df['Book-Publisher'].apply(pf.has_special_characters)]
 
 # Book Title preprocessing steps
 # Initialising lemmatizer, stopwords, and tfidf
@@ -33,10 +20,52 @@ tfidf_vectorizer = TfidfVectorizer()
 stop_words = set(stopwords.words('english'))
 
 processed_titles = []
-for i, title in enumerate(filtered_titles):
-    processed_titles.append(pf.text_preprocess(title, stop_words,lemmatizer))
+for i, title in enumerate(df['Book-Title']):
+    processed_titles.append(pf.title_preprocess(title, stop_words,lemmatizer))
+df['Title-Tokens'] = [word_tokenize(t) for t in processed_titles]
+
 
 tfidf_matrix = tfidf_vectorizer.fit_transform(processed_titles)
+
+# Author preprocessing steps
+# Setting all author names to lowercase
+df['Book-Author'] = df['Book-Author'].apply(lambda x: x.lower())
+
+# Fixing special cases (periods with no spaces)
+author_special = df['Book-Author'].apply(lambda x: re.sub(r'\.(?=\w)', '. ', x))
+
+# Removing All punctuations
+author_punct = author_special.apply(lambda x: re.sub(r'[^A-Za-z\s]', '', x))
+
+# Joining together single letters into one word (for name initials)
+df['Book-Author'] = author_punct.apply(pf.join_characters)
+df['Author-Tokens'] = df['Book-Author'].apply(word_tokenize)
+
+# Publishing Year Preprocessing Steps
+# Convert all years outside of plausible range to 0
+df.loc[~df['Year-Of-Publication'].between(1920, 2005), 'Year-Of-Publication'] = 0
+filtered_df = df[df['Year-Of-Publication'] != 0]
+
+# Get average year of publication for each author
+publish_years = filtered_df.groupby('Book-Author')['Year-Of-Publication'].mean().reset_index()
+
+# Replace 0 values with corresponding author mean
+df = df.merge(publish_years, on='Book-Author', suffixes=('', '_mean'))
+df['Year-Of-Publication'] = df.apply(lambda row: row['Year-Of-Publication_mean']
+    if row['Year-Of-Publication'] == 0 else row['Year-Of-Publication'], axis=1)
+
+df['Year-Of-Publication'] = df['Year-Of-Publication'].astype(int)
+df.drop(columns='Year-Of-Publication_mean', inplace=True)
+
+# Publisher Preprocessing Steps
+processed_publishers = []
+for i, title in enumerate(df['Book-Publisher']):
+    processed_publishers.append(pf.publisher_preprocess(title, stop_words,lemmatizer))
+
+df['Publisher-Tokens'] = [word_tokenize(t) for t in processed_publishers]
+
+df.to_csv("Data-Files/Preprocessed-Files/Preprocessed_Books.csv")
+
 
 # Only Uncomment below and run when generating new title tf-idf csv (it's very big!)
 # df_tfidf = pd.DataFrame(tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
