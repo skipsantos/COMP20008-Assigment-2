@@ -1,20 +1,27 @@
 import pandas as pd
-import re
-import preprocessing_functions as pf
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-from sklearn.feature_extraction.text import TfidfVectorizer
+import model_functions as mf
+from sklearn.cluster import KMeans
 
-ratings_df = pd.read_csv('Data-Files/Raw-Files/BX-Ratings.csv')
-books_df = pd.read_csv('Data-Files/Preprocessed-Files/Preprocessed_Books.csv')
+ratings_df = pd.read_csv('data-files/raw-files/BX-Ratings.csv')
+books_df = pd.read_csv('data-files/preprocessed-files/Preprocessed_Books.csv')
 
 merged_df = ratings_df.merge(books_df, on='ISBN')
 
-author_ratings = merged_df.groupby('Book-Author')['Book-Rating'].mean().reset_index()
-year_ratings = average_ratings = merged_df.groupby('Year-Of-Publication')['Book-Rating'].mean().reset_index()
+# Generating columns for average ratings and number of ratings per author
+author_ratings = merged_df.groupby('Author-Tokens').agg({'Book-Rating': ['mean', 'count']})
+author_ratings.columns = ['Average-Rating', 'Num-Ratings']
+author_ratings.to_csv('data-files/Author-Ratings.csv')
 
+# Use elbow method to find optimal clusters
+mf.elbow_method(author_ratings)
+# k found = 3
 
-print(year_ratings)
-print(author_ratings)
+# Kmeans cluster initialisation and plotting
+clusters = KMeans(n_clusters=3)
+clusters.fit(author_ratings)
+author_ratings['Cluster'] = clusters
+mf.plot_kmeans(author_ratings, clusters)
+
+author_ratings.reset_index(inplace=True)
+
 

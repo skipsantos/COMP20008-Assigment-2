@@ -10,11 +10,23 @@ def has_special_characters(s):
     return any(ord(char) > 127 for char in s)
 
 
+def abbreviate(s):
+    text = s.split()
+    new_string = []
+    for i in range(len(text)):
+        if i < (len(text) - 1):
+            new_string.append(text[i][0])
+        else:
+            new_string.append(text[i])
+    return ' '.join(new_string)
+
+
 # Joins together consecutive single characters in a string
-def join_characters(s):
+def process_strings(s):
     text = s.split()
     curr = ''
     new_words = []
+    # joining together single letters
     for word in text:
         if len(word) == 1:
             curr += word
@@ -49,6 +61,7 @@ def title_preprocess(doc, stop_words, lemmatizer):
 
     return ' '.join(lemmatized)
 
+
 # Preprocesses publishers
 def publisher_preprocess(doc, stop_words, lemmatizer):
     doc = doc.lower()
@@ -59,7 +72,7 @@ def publisher_preprocess(doc, stop_words, lemmatizer):
     doc_punct = re.sub(r'[^A-Za-z0-9\s]', '', doc_special)
 
     # Join single characters (initials)
-    doc_joined = join_characters(doc_punct)
+    doc_joined = process_strings(doc_punct)
 
     # Removing irrelevant words in publishers
     processed_doc = re.sub(r'\b(?:paperback|books|press|publishing|paperbacks)\b', '', doc_joined)

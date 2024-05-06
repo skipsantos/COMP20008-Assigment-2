@@ -6,7 +6,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-df = pd.read_csv('Data-Files/Raw-Files/BX-Books.csv')
+df = pd.read_csv('data-files/raw-files/BX-Books.csv')
 
 # Filter out all non ASCII characters
 df = df[~df['Book-Title'].apply(pf.has_special_characters)]
@@ -37,12 +37,13 @@ author_special = df['Book-Author'].apply(lambda x: re.sub(r'\.(?=\w)', '. ', x))
 # Removing All punctuations
 author_punct = author_special.apply(lambda x: re.sub(r'[^A-Za-z\s]', '', x))
 
-# Joining together single letters into one word (for name initials)
-df['Book-Author'] = author_punct.apply(pf.join_characters)
+# Abbreviating then joining together single letters into one word (for name initials)
+df['Book-Author'] = author_punct.apply(pf.abbreviate)
+df['Book-Author'] = df['Book-Author'].apply(pf.process_strings)
 df['Author-Tokens'] = df['Book-Author'].apply(word_tokenize)
 
 # Publishing Year Preprocessing Steps
-# Convert all years outside of plausible range to 0
+# Convert all years outside plausible range to 0
 df.loc[~df['Year-Of-Publication'].between(1920, 2005), 'Year-Of-Publication'] = 0
 filtered_df = df[df['Year-Of-Publication'] != 0]
 
@@ -64,10 +65,9 @@ for i, title in enumerate(df['Book-Publisher']):
 
 df['Publisher-Tokens'] = [word_tokenize(t) for t in processed_publishers]
 
-df.to_csv("Data-Files/Preprocessed-Files/Preprocessed_Books.csv")
-
+df.to_csv("data-files/preprocessed-files/Preprocessed_Books.csv")
 
 # Only Uncomment below and run when generating new title tf-idf csv (it's very big!)
 # df_tfidf = pd.DataFrame(tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
 # df_tfidf.index = filtered_titles
-# df_tfidf.to_csv("Data-Files/Preprocessed-Files/Title-Tfidf.csv")
+# df_tfidf.to_csv("data-files/preprocessed-files/Title-Tfidf.csv")
