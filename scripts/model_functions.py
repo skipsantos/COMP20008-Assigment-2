@@ -14,11 +14,11 @@ def plot_kmeans(df, clusters):
 
     plt.xlabel('Average Rating')
     plt.ylabel('Num Ratings')
+    plt.grid(axis='y')
     plt.title(f"k = {len(set(clusters.labels_))}")
 
+    plt.savefig('../plots/kmeans.png')
     plt.show()
-    plt.savefig('../Plots/kmeans.png')
-
 
 # performs elbow method to find optimal k clusters and saves the plot
 # code from Week 6 - Clustering and PCA Workshop
