@@ -9,15 +9,15 @@ def plot_kmeans(df, clusters):
     colormap = {0: 'tomato', 1: 'mediumseagreen', 2: 'lightskyblue'}
 
     plt.figure(figsize=(7, 10))
-    plt.scatter(df['Average-Rating'], df['Num-Ratings'],
+    plt.scatter(df['Num-Ratings'], df['Average-Rating'],
                c=[colormap.get(x) for x in clusters.labels_])
 
-    plt.xlabel('Average Rating')
-    plt.ylabel('Num Ratings')
+    plt.xlabel('Total Ratings')
+    plt.ylabel('Average Rating')
     plt.grid(axis='y')
     plt.title(f"k = {len(set(clusters.labels_))}")
 
-    plt.savefig('../plots/kmeans.png')
+    plt.savefig('../plots/kmeans-swapped.png')
     plt.show()
 
 # performs elbow method to find optimal k clusters and saves the plot

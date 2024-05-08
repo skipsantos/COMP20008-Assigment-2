@@ -4,6 +4,8 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk import edit_distance
+
 
 # Returns True if the string has special characters
 def has_special_characters(s):

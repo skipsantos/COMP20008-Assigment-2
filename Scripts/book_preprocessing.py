@@ -63,7 +63,7 @@ processed_publishers = []
 for i, title in enumerate(df['Book-Publisher']):
     processed_publishers.append(pf.publisher_preprocess(title, stop_words,lemmatizer))
 
-df['Publisher-Tokens'] = [word_tokenize(t) for t in processed_publishers]
+df['Publisher-Tokens'] = df['Book-Publisher'].apply(word_tokenize)
 
 df.to_csv("data-files/preprocessed-files/Preprocessed_Books.csv")
 
