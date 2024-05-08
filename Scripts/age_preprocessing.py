@@ -3,9 +3,9 @@ import numpy as np
 import re
 def preprocessedAge():
     # Load data
-    books_df = pd.read_csv("data-files/BX-Books.csv")
-    users_df = pd.read_csv("data-files/BX-Users.csv")
-    ratings_df = pd.read_csv("data-files/BX-Ratings.csv")
+    books_df = pd.read_csv("Data-files/BX-Books.csv")
+    users_df = pd.read_csv("Data-files/BX-Users.csv")
+    ratings_df = pd.read_csv("Data-files/BX-Ratings.csv")
 
     # Clean user age data
     users_df["User-Age"] = users_df["User-Age"].apply(onlyNumber)

@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 
-ratings_df = pd.read_csv('data-files/raw-files/BX-Ratings.csv')
-books_df = pd.read_csv('data-files/preprocessed-files/Preprocessed_Books.csv')
+ratings_df = pd.read_csv('Data-files/raw-files/BX-Ratings.csv')
+books_df = pd.read_csv('Data-files/preprocessed-files/Preprocessed_Books.csv')
 
 merged_df = ratings_df.merge(books_df, on='ISBN')
 
@@ -27,7 +27,7 @@ clusters = KMeans(n_clusters=3)
 clusters.fit(author_ratings)
 mf.plot_kmeans(author_ratings, clusters)
 author_ratings["Cluster"] = clusters.labels_
-author_ratings.to_csv('data-files/Author-Ratings2.csv')
+author_ratings.to_csv('Data-files/Author-Ratings2.csv')
 
 
 author_ratings.reset_index(inplace=True)

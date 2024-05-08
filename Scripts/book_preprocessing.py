@@ -6,7 +6,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-df = pd.read_csv('data-files/raw-files/BX-Books.csv')
+df = pd.read_csv('Data-files/raw-files/BX-Books.csv')
 
 # Filter out all non ASCII characters
 df = df[~df['Book-Title'].apply(pf.has_special_characters)]
@@ -65,9 +65,9 @@ for i, title in enumerate(df['Book-Publisher']):
 
 df['Publisher-Tokens'] = df['Book-Publisher'].apply(word_tokenize)
 
-df.to_csv("data-files/preprocessed-files/Preprocessed_Books.csv")
+df.to_csv("Data-files/preprocessed-files/Preprocessed_Books.csv")
 
 # Only Uncomment below and run when generating new title tf-idf csv (it's very big!)
 # df_tfidf = pd.DataFrame(tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
 # df_tfidf.index = filtered_titles
-# df_tfidf.to_csv("data-files/preprocessed-files/Title-Tfidf.csv")
+# df_tfidf.to_csv("Data-files/preprocessed-files/Title-Tfidf.csv")
