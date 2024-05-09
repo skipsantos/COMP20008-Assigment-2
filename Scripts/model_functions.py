@@ -7,6 +7,8 @@ from sklearn.preprocessing import MinMaxScaler
 # code from Week 6 - Clustering and PCA Workshop
 def plot_kmeans(df, clusters):
     colormap = {0: 'tomato', 1: 'mediumseagreen', 2: 'lightskyblue'}
+    handles = [plt.Line2D([], [], marker='o', color=color, linestyle='None') for color in colormap.values()]
+    labels = [f'Cluster {cluster_id}' for cluster_id in colormap.keys()]
 
     plt.figure(figsize=(7, 10))
     plt.scatter(df['Num-Ratings'], df['Average-Rating'],
@@ -15,8 +17,8 @@ def plot_kmeans(df, clusters):
     plt.xlabel('Total Ratings')
     plt.ylabel('Average Rating')
     plt.grid(axis='y')
-    plt.title(f"k = {len(set(clusters.labels_))}")
-
+    plt.title("K-Means Clustering of Author Rating Quantity and Average Rating")
+    plt.legend(handles, labels, loc='upper right')
     plt.savefig('../plots/kmeans-swapped.png')
     plt.show()
 

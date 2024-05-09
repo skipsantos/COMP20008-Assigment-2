@@ -24,7 +24,6 @@ for i, title in enumerate(df['Book-Title']):
     processed_titles.append(pf.title_preprocess(title, stop_words,lemmatizer))
 df['Title-Tokens'] = [word_tokenize(t) for t in processed_titles]
 
-
 tfidf_matrix = tfidf_vectorizer.fit_transform(processed_titles)
 
 # Author preprocessing steps
