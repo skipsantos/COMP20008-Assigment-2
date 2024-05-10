@@ -43,7 +43,7 @@ df['Author-Tokens'] = df['Book-Author'].apply(word_tokenize)
 
 # Publishing Year Preprocessing Steps
 # Convert all years outside plausible range to 0
-df.loc[~df['Year-Of-Publication'].between(1920, 2005), 'Year-Of-Publication'] = 0
+df.loc[~df['Year-Of-Publication'].between(1900, 2023), 'Year-Of-Publication'] = 0
 filtered_df = df[df['Year-Of-Publication'] != 0]
 
 # Get average year of publication for each author
