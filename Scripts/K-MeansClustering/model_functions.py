@@ -17,9 +17,9 @@ def plot_kmeans(df, clusters):
     plt.xlabel('Total Ratings')
     plt.ylabel('Average Rating')
     plt.grid(axis='y')
-    plt.title("K-Means Clustering of Author Rating Quantity and Average Rating")
+    plt.title("K-MeansClustering of Author Rating Quantity and Average Rating")
     plt.legend(handles, labels, loc='upper right')
-    plt.savefig('../plots/kmeans-swapped.png')
+    plt.savefig('../../plots/kmeans-no-outliers.png')
     plt.show()
 
 # performs elbow method to find optimal k clusters and saves the plot
@@ -40,5 +40,5 @@ def elbow_method(df):
     plt.xlabel('k')
     plt.ylabel('Distortion')
 
-    plt.savefig('../plots/elbow.png')
+    plt.savefig('../../plots/elbow.png')
     plt.show()

@@ -6,12 +6,10 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 
-ratings_df = pd.read_csv('Data-Files/raw-files/BX-Ratings.csv')
-books_df = pd.read_csv('Data-Files/preprocessed-files/Preprocessed_Books.csv')
+ratings_df = pd.read_csv('../Data-Files/raw-files/BX-Ratings.csv')
+books_df = pd.read_csv('../Data-Files/preprocessed-files/Preprocessed_Books.csv')
 
 merged_df = ratings_df.merge(books_df, on='ISBN')
-unique = ratings_df.drop_duplicates(subset=['ISBN'])
-print(len(books_df))
 
 # Generating columns for average ratings and number of ratings per author
 author_ratings = merged_df.groupby('Author-Tokens').agg({'Book-Rating': ['mean', 'count']})
@@ -61,7 +59,7 @@ for cluster_id, info in clusters_info.items():
     print(f"  Max: {info['Max']}")
     print(f"  Min: {info['Min']}")
 
-author_ratings.to_csv('Data-Files/Author-Ratings2.csv')
+author_ratings.to_csv('../Data-Files/Author-Ratings-NoOutliers.csv')
 
 author_ratings.reset_index(inplace=True)
 
