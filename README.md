@@ -1,7 +1,7 @@
 # This project is made for the subject Elements of Data Processing in semester 1 of year 2024.
-# Authors: Sonika Agarwal, Jose Augusto Santos, Dorn Kasikumpaiboon
+## Authors: Sonika Agarwal, Jose Augusto Santos, Dorn Kasikumpaiboon
 
-# Objective: 
+## Objective: 
 - Determine and evaluate the popularity of authors based on the quality and quantity of  the ratings that their books receive.
 - Develop a recommendation system that accurately recommends books to users and gives a prediction for what they might rate the book.
 
@@ -29,13 +29,13 @@
 - ## note to skip: please add if you have any "main" files
 - Scripts/RecommendationSystem/RecommendationSystemMain.ipynb
 
-## HISTORY:
+## History:
 - The recommendation system folder contains a folder with the commit history of the system. It also includes instances of count vectorizer within it. 
 path : Scripts/RecommendationSystem/RecSystemModel_Evaluation
 
-# Data Folder: 
+## Data Folder: 
 Contains two folders. One with the raw data and the other with the pre-processed data
 
-# Pre-Processing Folder:
+## Pre-Processing Folder:
 Contains files to process age, books dataset and general pre-processing
 
